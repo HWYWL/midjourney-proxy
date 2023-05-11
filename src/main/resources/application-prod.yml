@@ -1,0 +1,39 @@
+logging:
+  level:
+    ROOT: info
+    com.github.novicezk.midjourney: info
+mj:
+  discord:
+    guild-id: 1105311904089518164
+    channel-id: 1105311905368784940
+    user-token: MTA5OTY5NTQwMjUzNTYzNzA2Mw.GPAQd4.rBPgi2iUgoJfZBS5GTrE-kl0UjvaLjCVAb6b7M
+    bot-token: MTEwNTMxMjU2OTE4NDQ5NzY3NA.GMiGWP.aXtWcO3KYsGd_rqMILZUwutULcf9epiyMlp6hI
+  task-store:
+    type: REDIS
+    timeout: 30d
+  translate-way: null
+
+spring:
+  redis:
+    host: 172.16.10.187
+    port: 6379
+    database: 4
+  # 多数据源配置
+  datasource:
+    dynamic:
+      primary: mysql #设置默认的数据源或者数据源组,默认值即为postgresql
+      strict: false #设置严格模式,默认false不启动. 启动后在未匹配到指定数据源时候会抛出异常,不启动则使用默认数据源.
+      p6spy: true # SQL记录器，默认false,不想打印SQL可以关闭
+      datasource:
+        mysql:
+          url: jdbc:mysql://172.16.10.187:3306/mj?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.cj.jdbc.Driver
+
+# 生成的图像文件存储
+cos:
+  secretId: AKIDObZBZhY8SWLtAAtMXR4QVJq66pIUP4SY
+  secretKey: rSnqc7LIyNVBbkcEYbNs76oFPHsDH4aq
+  bucketName: lg-6pthrhxo-1253466000
+  cosRegion: ap-shanghai
