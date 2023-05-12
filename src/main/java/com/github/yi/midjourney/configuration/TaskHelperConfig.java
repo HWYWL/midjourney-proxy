@@ -2,9 +2,6 @@ package com.github.yi.midjourney.configuration;
 
 import com.github.yi.midjourney.ProxyProperties;
 import com.github.yi.midjourney.dto.State;
-import com.github.yi.midjourney.service.TranslateService;
-import com.github.yi.midjourney.service.translate.BaiduTranslateServiceImpl;
-import com.github.yi.midjourney.service.translate.GPTTranslateServiceImpl;
 import com.github.yi.midjourney.support.task.InMemoryTaskHelper;
 import com.github.yi.midjourney.support.task.RedisTaskHelper;
 import com.github.yi.midjourney.support.task.Task;
@@ -30,21 +27,20 @@ public class TaskHelperConfig {
         Duration timeout = proxyProperties.getTaskStore().getTimeout();
         RedisTemplate<String, Task> redisTemplate = new RedisTemplate<>();
         RedisTemplate<String, State> redisStateTemplate = new RedisTemplate<>();
-        return switch (type) {
-            case IN_MEMORY -> new InMemoryTaskHelper(timeout);
-            case REDIS -> new RedisTaskHelper(timeout,
-                    taskRedisTemplate(redisConnectionFactory, redisTemplate),
-                    taskRedisUserTemplate(redisConnectionFactory, redisStateTemplate));
-        };
-    }
 
-    @Bean
-    TranslateService translateService(ProxyProperties properties) {
-        return switch (properties.getTranslateWay()) {
-            case BAIDU -> new BaiduTranslateServiceImpl(properties.getBaiduTranslate());
-            case GPT -> new GPTTranslateServiceImpl(properties.getOpenai());
-            default -> prompt -> prompt;
-        };
+        TaskHelper taskHelper = null;
+        switch (type){
+            case IN_MEMORY:
+                taskHelper = new InMemoryTaskHelper(timeout);
+                break;
+            case REDIS:
+                taskHelper = new RedisTaskHelper(timeout,
+                        taskRedisTemplate(redisConnectionFactory, redisTemplate),
+                        taskRedisUserTemplate(redisConnectionFactory, redisStateTemplate));
+                break;
+        }
+
+        return taskHelper;
     }
 
     public RedisTemplate<String, Task> taskRedisTemplate(RedisConnectionFactory redisConnectionFactory, RedisTemplate<String, Task> redisTemplate) {

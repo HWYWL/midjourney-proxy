@@ -20,6 +20,7 @@ import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class DiscordMessageListener extends ListenerAdapter {
         if (CharSequenceUtil.isBlank(relatedTaskId)) {
             return;
         }
-        List<Action> uvActions = List.of(Action.UPSCALE, Action.VARIATION);
+        List<Action> uvActions = Arrays.asList(Action.UPSCALE, Action.VARIATION);
         State state = this.taskHelper.getState(relatedTaskId);
         Task task = this.taskHelper.listTask(state.getUserId()).stream()
                 .filter(t -> relatedTaskId.equals(t.getRelatedTaskId())

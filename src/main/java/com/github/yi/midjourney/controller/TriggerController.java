@@ -13,7 +13,6 @@ import com.github.yi.midjourney.model.ResultEnum;
 import com.github.yi.midjourney.model.TaskStatus;
 import com.github.yi.midjourney.util.Message;
 import com.github.yi.midjourney.service.DiscordService;
-import com.github.yi.midjourney.service.TranslateService;
 import com.github.yi.midjourney.support.task.Task;
 import com.github.yi.midjourney.support.task.TaskHelper;
 import com.github.yi.midjourney.util.ConvertUtils;
@@ -32,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TriggerController {
     private final DiscordService discordService;
-    private final TranslateService translateService;
     private final TaskHelper taskHelper;
     private final ProxyProperties properties;
 
@@ -62,8 +60,7 @@ public class TriggerController {
             }
             key = task.getId();
             task.setPrompt(prompt);
-            String promptEn = this.translateService.translateToEnglish(prompt).trim();
-            task.setFinalPrompt("[" + task.getId() + "]" + promptEn);
+            task.setFinalPrompt("[" + task.getId() + "]" + prompt);
             task.setDescription("/imagine " + submitDTO.getPrompt());
             this.taskHelper.putState(task.getId(), task.getState());
             this.taskHelper.putTask(userId, task.getId(), task);

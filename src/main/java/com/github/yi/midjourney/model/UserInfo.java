@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -30,7 +29,6 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class UserInfo implements Serializable {
 
-    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

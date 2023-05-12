@@ -64,7 +64,7 @@ public class RedisTaskHelper implements TaskHelper {
         ValueOperations<String, Task> operations = this.redisTemplate.opsForValue();
         return keys.stream().map(operations::get)
                 .filter(Objects::nonNull)
-                .toList();
+                .collect(Collectors.toList());
     }
 
 
