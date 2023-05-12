@@ -2,6 +2,9 @@ logging:
   level:
     ROOT: info
     com.github.yi.midjourney: debug
+  file:
+    path: G:/work/logs/midjourney-proxy
+
 mj:
   discord:
     guild-id: 1105311904089518164
