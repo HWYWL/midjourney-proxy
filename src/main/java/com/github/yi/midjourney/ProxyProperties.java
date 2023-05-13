@@ -7,12 +7,16 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
+/**
+ * 配置数据
+ *
+ * @author YI
+ */
 @Data
 @Component
 @ConfigurationProperties(prefix = "mj")
 public class ProxyProperties {
 
-    private final TaskStore taskStore = new TaskStore();
     /**
      * discord配置.
      */
@@ -92,29 +96,5 @@ public class ProxyProperties {
          * 相似度，取值 0-2.
          */
         private double temperature = 0;
-    }
-
-    @Data
-    public static class TaskStore {
-        /**
-         * timeout of task: default 30 days
-         */
-        private Duration timeout = Duration.ofDays(30);
-        /**
-         * default: TaskStore.IN_MEMORY
-         * type: TaskStore.REDIS for Redis TaskStore
-         */
-        private Type type = Type.IN_MEMORY;
-
-        public enum Type {
-            /**
-             * redis.
-             */
-            REDIS,
-            /**
-             * in_memory.
-             */
-            IN_MEMORY
-        }
     }
 }

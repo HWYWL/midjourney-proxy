@@ -3,7 +3,7 @@ logging:
     ROOT: info
     com.github.yi.midjourney: debug
   file:
-    path: G:/work/logs/midjourney-proxy
+    path: D:/work/logs/midjourney-proxy
 
 mj:
   discord:
@@ -11,16 +11,9 @@ mj:
     channel-id: 1105311905368784940
     user-token: MTA5OTY5NTQwMjUzNTYzNzA2Mw.GPAQd4.rBPgi2iUgoJfZBS5GTrE-kl0UjvaLjCVAb6b7M
     bot-token: MTEwNTMxMjU2OTE4NDQ5NzY3NA.GMiGWP.aXtWcO3KYsGd_rqMILZUwutULcf9epiyMlp6hI
-  task-store:
-    type: REDIS
-    timeout: 30d
   translate-way: null
 
 spring:
-  redis:
-    host: 172.16.10.187
-    port: 6379
-    database: 4
   # 多数据源配置
   datasource:
     dynamic:
@@ -29,7 +22,7 @@ spring:
       p6spy: true # SQL记录器，默认false,不想打印SQL可以关闭
       datasource:
         mysql:
-          url: jdbc:mysql://172.16.10.187:3306/mj?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+          url: jdbc:mysql://192.168.100.196:3307/mj?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
           username: root
           password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver

@@ -12,15 +12,9 @@ mj:
     user-token: MTA5OTY5NTQwMjUzNTYzNzA2Mw.GPAQd4.rBPgi2iUgoJfZBS5GTrE-kl0UjvaLjCVAb6b7M
     bot-token: MTEwNTMxMjU2OTE4NDQ5NzY3NA.GMiGWP.aXtWcO3KYsGd_rqMILZUwutULcf9epiyMlp6hI
   task-store:
-    type: REDIS
-    timeout: 30d
   translate-way: null
 
 spring:
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    database: 4
   # 多数据源配置
   datasource:
     dynamic:

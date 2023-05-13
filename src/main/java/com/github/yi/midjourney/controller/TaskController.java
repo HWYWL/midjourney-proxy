@@ -2,9 +2,9 @@ package com.github.yi.midjourney.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
+import com.github.yi.midjourney.service.TaskLogService;
 import com.github.yi.midjourney.util.Message;
-import com.github.yi.midjourney.support.task.Task;
-import com.github.yi.midjourney.support.task.TaskHelper;
+import com.github.yi.midjourney.model.Task;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,19 +15,20 @@ import java.util.List;
 
 /**
  * 用于获取任务详情接口
+ *
  * @author YI
  */
 @RestController
 @RequestMapping("/task")
 @RequiredArgsConstructor
 public class TaskController {
-    private final TaskHelper taskHelper;
+    private final TaskLogService taskLogService;
 
     @SaCheckLogin
     @GetMapping("/list")
     public Message<List<Task>> listTask() {
         int userId = StpUtil.getLoginIdAsInt();
-        List<Task> tasks = this.taskHelper.listTask(userId);
+        List<Task> tasks = this.taskLogService.getListTaskByUserId(userId);
 
         return Message.success(tasks);
     }
@@ -35,8 +36,8 @@ public class TaskController {
     @SaCheckLogin
     @GetMapping("/{id}/fetch")
     public Message<Task> getTask(@PathVariable String id) {
-        int userId = StpUtil.getLoginIdAsInt();
-        Task task = this.taskHelper.findById(userId, id);
+        Task task = this.taskLogService.getOneByTaskId(id);
+
         return Message.success(task);
     }
 }

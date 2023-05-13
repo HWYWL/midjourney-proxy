@@ -18,6 +18,7 @@ public enum ResultEnum {
     LOGIN_ERROR(1009, "登陆失败，请检查用户名和密码!"),
     LOGIN_EXPIRE(1010, "登陆已过期，请重新登录!"),
     LOGIN_NOT_VIP(1011, "VIP已过期，暂无法使用此功能!"),
+    ID_NOT_MATCH_THE_LOGIN_USER(1012, "参数id和登录用户不匹配!"),
     UNKNOWN_ERROR(9999, "未知的错误!");
 
     private Integer code;
