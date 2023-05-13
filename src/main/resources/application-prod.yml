@@ -1,7 +1,7 @@
 logging:
   level:
     ROOT: info
-    com.github.novicezk.midjourney: info
+    com.github.yi.midjourney: info
   file:
     path: /home/midjourney-proxy/logs
 
@@ -11,7 +11,6 @@ mj:
     channel-id: 1105311905368784940
     user-token: MTA5OTY5NTQwMjUzNTYzNzA2Mw.GPAQd4.rBPgi2iUgoJfZBS5GTrE-kl0UjvaLjCVAb6b7M
     bot-token: MTEwNTMxMjU2OTE4NDQ5NzY3NA.GMiGWP.aXtWcO3KYsGd_rqMILZUwutULcf9epiyMlp6hI
-  task-store:
   translate-way: null
 
 spring:
