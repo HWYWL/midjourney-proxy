@@ -18,6 +18,10 @@ public class SubmitDTO {
      */
     private String extraParam;
     /**
+     * 图像url，可以根据这个图像生成图像
+     */
+    private String imageUrl;
+    /**
      * 任务ID: action 为 UPSCALE\VARIATION\RESET 必传.
      */
     private String taskId;

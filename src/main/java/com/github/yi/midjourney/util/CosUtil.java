@@ -1,5 +1,7 @@
 package com.github.yi.midjourney.util;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -21,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 @Component
 public class CosUtil {
@@ -42,7 +45,8 @@ public class CosUtil {
         File tempFile = FileUtil.createTempFile();
         File file = HttpUtil.downloadFileFromUrl(imageUrl, tempFile, 10000);
 
-        String key = "midjourney/" + split[split.length - 1];
+        String today = DateUtil.convertTimeZone(DateUtil.date(), TimeZone.getTimeZone("Asia/Shanghai")).toString(DatePattern.NORM_DATE_PATTERN);
+        String key = "midjourney/" + today + StrUtil.SLASH + split[split.length - 1];
         String url = uploadFile(file, key);
 
         // 拼接url返回
@@ -53,11 +57,12 @@ public class CosUtil {
      * 将本地文件上传到腾讯云
      *
      * @param file      本地图片文件
-     * @param imageType
+     * @param imageType 图片格式
      * @return 腾讯cos图片地址
      */
     public String cosUpload(MultipartFile file, String imageType) throws IOException {
-        String key = "userImages/" + RandomUtil.randomString(16) + StrUtil.DOT + imageType;
+        String today = DateUtil.convertTimeZone(DateUtil.date(), TimeZone.getTimeZone("Asia/Shanghai")).toString(DatePattern.NORM_DATE_PATTERN);
+        String key = "userImages/" + today + StrUtil.SLASH + RandomUtil.randomString(16) + StrUtil.DOT + imageType;
         // 拼接url返回
         return uploadFile(file, key);
     }

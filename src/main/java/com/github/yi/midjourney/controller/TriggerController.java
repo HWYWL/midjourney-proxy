@@ -71,9 +71,22 @@ public class TriggerController {
             if (CharSequenceUtil.isBlank(prompt)) {
                 return Message.validationError();
             }
+
+            // 拼接请求的生成图片的参数
+            StringBuilder builder = new StringBuilder();
+            builder.append("/imagine ");
+            if (StrUtil.isNotBlank(submitDTO.getImageUrl())) {
+                builder.append(StrUtil.SPACE).append(submitDTO.getImageUrl());
+            }
+            builder.append(StrUtil.SPACE).append(submitDTO.getPrompt()).append(StrUtil.SPACE);
+
+            if (StrUtil.isNotBlank(submitDTO.getExtraParam())) {
+                builder.append(StrUtil.SPACE).append(submitDTO.getExtraParam());
+            }
+
             task = taskBuilder.prompt(prompt)
                     .finalPrompt("[" + taskId + "]" + prompt)
-                    .description("/imagine " + submitDTO.getPrompt() + StrUtil.SPACE + submitDTO.getExtraParam()).build();
+                    .description(builder.toString()).build();
 
             // 更新数据库
             taskLogService.saveOrUpdateTask(task);
