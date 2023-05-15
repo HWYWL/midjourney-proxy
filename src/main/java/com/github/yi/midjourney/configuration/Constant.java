@@ -1,5 +1,10 @@
 package com.github.yi.midjourney.configuration;
 
+import cn.hutool.core.img.ImgUtil;
+
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 全局常量
  *
@@ -25,4 +30,9 @@ public class Constant {
      * 腾讯云存储对象地址前缀
      */
     public static final String COS_STORAGE_ADDRESS_PREFIX = "https://lg-6pthrhxo-1253466000.cos.ap-shanghai.myqcloud.com/";
+
+    /**
+     * 支持的文件上传格式
+     */
+    public static final List<String> IMAGE_TYPES = Arrays.asList(ImgUtil.IMAGE_TYPE_JPEG, ImgUtil.IMAGE_TYPE_JPG, ImgUtil.IMAGE_TYPE_PNG);
 }

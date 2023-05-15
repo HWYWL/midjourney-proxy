@@ -14,6 +14,10 @@ public class SubmitDTO {
      */
     private String prompt;
     /**
+     * Midjourney额外参数,例如版本选择4或者5，图片比例1:1、4:3
+     */
+    private String extraParam;
+    /**
      * 任务ID: action 为 UPSCALE\VARIATION\RESET 必传.
      */
     private String taskId;
@@ -22,7 +26,7 @@ public class SubmitDTO {
      */
     private Integer index;
     /**
-     * notifyHook of caller
+     * 任务处理完毕的回调函数
      */
     private String notifyHook;
 }

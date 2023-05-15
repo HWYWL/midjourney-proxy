@@ -6,6 +6,10 @@ server:
 spring:
   profiles:
     active: dev
+  servlet:
+    multipart:
+      maxFileSize: 8MB
+      maxRequestSize: 8MB
 
 ############## Sa-Token 配置 ##############
 sa-token:
