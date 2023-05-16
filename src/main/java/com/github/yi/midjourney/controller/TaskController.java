@@ -6,10 +6,7 @@ import com.github.yi.midjourney.service.TaskLogService;
 import com.github.yi.midjourney.util.Message;
 import com.github.yi.midjourney.model.Task;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/task")
 @RequiredArgsConstructor
+@CrossOrigin
 public class TaskController {
     private final TaskLogService taskLogService;
 

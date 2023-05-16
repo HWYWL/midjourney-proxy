@@ -40,6 +40,7 @@ import java.util.TimeZone;
 @RestController
 @RequestMapping("/trigger")
 @RequiredArgsConstructor
+@CrossOrigin
 public class TriggerController {
     private final DiscordService discordService;
     private final ProxyProperties properties;
