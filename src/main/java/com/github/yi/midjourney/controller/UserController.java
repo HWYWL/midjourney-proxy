@@ -1,14 +1,19 @@
 package com.github.yi.midjourney.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.github.yi.midjourney.dto.UserInfoDTO;
 import com.github.yi.midjourney.model.ResultEnum;
 import com.github.yi.midjourney.model.UserInfo;
 import com.github.yi.midjourney.service.UserInfoService;
 import com.github.yi.midjourney.util.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * 用户登录和校验接口
@@ -51,7 +56,7 @@ public class UserController {
      * @return 返回用户id
      */
     @RequestMapping("doLogin")
-    public Message<UserInfo> doLogin(@RequestBody UserInfo userInfo) {
+    public Message<UserInfoDTO> doLogin(@RequestBody UserInfo userInfo) {
         String userName = userInfo.getUserName();
         String password = userInfo.getPassword();
         if (StrUtil.isBlank(userName) || StrUtil.isBlank(password)) {
@@ -65,8 +70,12 @@ public class UserController {
         }
 
         StpUtil.login(userLogin.getId());
+        SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
 
-        return Message.success(userLogin);
+        UserInfoDTO userInfoDTO = BeanUtil.copyProperties(userLogin, UserInfoDTO.class);
+        userInfoDTO.setToken(tokenInfo.tokenValue);
+
+        return Message.success(userInfoDTO);
     }
 
     /**

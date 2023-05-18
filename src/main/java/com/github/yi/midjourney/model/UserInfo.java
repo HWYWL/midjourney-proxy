@@ -6,7 +6,6 @@ package com.github.yi.midjourney.model;
  * @author YI
  */
 
-import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -19,8 +18,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- * @description 用户表
  * @author YI
+ * @description 用户表
  * @date 2023-05-10
  */
 @TableName("user_info")
