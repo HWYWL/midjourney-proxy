@@ -3,7 +3,6 @@ package com.github.yi.midjourney.controller;
 import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -26,9 +25,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.TimeZone;
 
@@ -40,7 +36,6 @@ import java.util.TimeZone;
 @RestController
 @RequestMapping("/trigger")
 @RequiredArgsConstructor
-@CrossOrigin
 public class TriggerController {
     private final DiscordService discordService;
     private final ProxyProperties properties;

@@ -15,7 +15,7 @@ public class UserInfoDTO extends UserInfo {
     /**
      * 用户登录token
      */
-    private String token;
+    private String satoken;
 
     public UserInfoDTO(Integer id, String userName, String password, Integer state, String groundsProhibitio, Timestamp vipStartTime, Timestamp vipEndTime) {
         super(id, userName, password, state, groundsProhibitio, vipStartTime, vipEndTime);

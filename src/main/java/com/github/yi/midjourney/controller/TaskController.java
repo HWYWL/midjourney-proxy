@@ -2,11 +2,14 @@ package com.github.yi.midjourney.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
+import com.github.yi.midjourney.model.Task;
 import com.github.yi.midjourney.service.TaskLogService;
 import com.github.yi.midjourney.util.Message;
-import com.github.yi.midjourney.model.Task;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -18,7 +21,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/task")
 @RequiredArgsConstructor
-@CrossOrigin
 public class TaskController {
     private final TaskLogService taskLogService;
 

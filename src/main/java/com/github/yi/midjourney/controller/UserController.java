@@ -11,9 +11,10 @@ import com.github.yi.midjourney.model.UserInfo;
 import com.github.yi.midjourney.service.UserInfoService;
 import com.github.yi.midjourney.util.Message;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 用户登录和校验接口
@@ -22,7 +23,6 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/user/")
-@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -73,7 +73,7 @@ public class UserController {
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
 
         UserInfoDTO userInfoDTO = BeanUtil.copyProperties(userLogin, UserInfoDTO.class);
-        userInfoDTO.setToken(tokenInfo.tokenValue);
+        userInfoDTO.setSatoken(tokenInfo.tokenValue);
 
         return Message.success(userInfoDTO);
     }
