@@ -1,23 +1,23 @@
 package com.github.yi.midjourney.dto;
 
 import com.github.yi.midjourney.model.UserInfo;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.sql.Timestamp;
+import lombok.*;
 
 /**
- * @author Administrator
+ * @author YI
  */
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserInfoDTO extends UserInfo {
     /**
-     * 用户登录token
+     * 登录授权的token
      */
     private String satoken;
 
-    public UserInfoDTO(Integer id, String userName, String password, Integer state, String groundsProhibitio, Timestamp vipStartTime, Timestamp vipEndTime) {
-        super(id, userName, password, state, groundsProhibitio, vipStartTime, vipEndTime);
+    @Override
+    public String toString() {
+        return super.toString() + "ToString{" + "secondName='" + satoken + '\'' + '}';
     }
 }
