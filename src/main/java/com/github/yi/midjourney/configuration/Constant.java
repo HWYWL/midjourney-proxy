@@ -2,8 +2,8 @@ package com.github.yi.midjourney.configuration;
 
 import cn.hutool.core.img.ImgUtil;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 全局常量
@@ -11,6 +11,21 @@ import java.util.List;
  * @author yi
  */
 public class Constant {
+    /**
+     * 用于执行mj绘画生成的任务队列，控制超过mj的并发防止卡死
+     */
+    public static Queue<Map<String, String>> taskQueue = new LinkedList<>();
+
+    /**
+     * 生成MJ任务并发数
+     */
+    public static final int GENERATE_TASK_CONCURRENCY_QUEUE_NUM = 3;
+
+    /**
+     * 生成MJ任务并发计数
+     */
+    public static final AtomicInteger ATOMIC_INT = new AtomicInteger(0);
+
     /**
      * 用户密码加密密钥
      */

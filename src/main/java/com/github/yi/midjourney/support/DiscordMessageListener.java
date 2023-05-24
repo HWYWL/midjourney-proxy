@@ -3,11 +3,14 @@ package com.github.yi.midjourney.support;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.thread.ThreadUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.yi.midjourney.ProxyProperties;
+import com.github.yi.midjourney.configuration.Constant;
 import com.github.yi.midjourney.model.Action;
 import com.github.yi.midjourney.model.Task;
 import com.github.yi.midjourney.model.TaskStatus;
+import com.github.yi.midjourney.service.DiscordService;
 import com.github.yi.midjourney.service.NotifyService;
 import com.github.yi.midjourney.service.TaskLogService;
 import com.github.yi.midjourney.util.ConvertUtils;
@@ -23,6 +26,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.TimeZone;
 
 @Slf4j
@@ -33,6 +37,7 @@ public class DiscordMessageListener extends ListenerAdapter {
     private final NotifyService notifyService;
     private final CosUtil cosUtil;
     private final TaskLogService taskLogService;
+    private final DiscordService discordService;
 
     private boolean ignoreMessage(Message message) {
         String authorName = message.getAuthor().getName();
@@ -74,7 +79,7 @@ public class DiscordMessageListener extends ListenerAdapter {
             userInfoQueryWrapper.clear();
             userInfoQueryWrapper.eq(Task::getTaskId, taskId);
             taskLog = taskLogService.getOne(userInfoQueryWrapper, false);
-        }else {
+        } else {
             percentage = "100%";
         }
 
@@ -140,29 +145,46 @@ public class DiscordMessageListener extends ListenerAdapter {
         }
     }
 
+    /**
+     * 将完成的任务保存在数据库，并将图片的url转为国内
+     *
+     * @param task    任务数据
+     * @param message mj的消息数据
+     */
     private void finishTask(Task task, Message message) {
-        DateTime dateTime = DateUtil.convertTimeZone(DateUtil.date(), TimeZone.getTimeZone("Asia/Shanghai"));
-        task.setFinishTime(dateTime.toTimestamp());
-        if (!message.getAttachments().isEmpty()) {
-            task.setTaskStatus(String.valueOf(TaskStatus.SUCCESS));
-            task.setTaskProgress("100%");
+        //
+        ThreadUtil.execAsync(() -> {
+            DateTime dateTime = DateUtil.convertTimeZone(DateUtil.date(), TimeZone.getTimeZone("Asia/Shanghai"));
+            task.setFinishTime(dateTime.toTimestamp());
+            if (!message.getAttachments().isEmpty()) {
+                task.setTaskStatus(String.valueOf(TaskStatus.SUCCESS));
+                task.setTaskProgress("100%");
 
-            String imageUrl = message.getAttachments().get(0).getUrl();
-            log.info("图片地址转换开始: {}", imageUrl);
-            // 将midjourney图片地址转为腾讯cos文件地址
-            String cosUrl = cosUtil.cosUpload(imageUrl);
-            log.info("图片地址转换完成: {}", cosUrl);
+                String imageUrl = message.getAttachments().get(0).getUrl();
+                log.info("图片地址转换开始: {}", imageUrl);
+                // 将midjourney图片地址转为腾讯cos文件地址
+                String cosUrl = cosUtil.cosUpload(imageUrl);
+                log.info("图片地址转换完成: {}", cosUrl);
 
-            task.setImageUrl(cosUrl);
-            int hashStartIndex = imageUrl.lastIndexOf("_");
-            // .webp or .png
-            int hashEndIndex = imageUrl.endsWith(".webp") ? imageUrl.length() - 5 : imageUrl.length() - 4;
-            task.setMessageHash(imageUrl.substring(hashStartIndex + 1, hashEndIndex));
-        } else {
-            task.setTaskStatus(String.valueOf(TaskStatus.FAILURE));
+                task.setImageUrl(cosUrl);
+                int hashStartIndex = imageUrl.lastIndexOf("_");
+                // .webp or .png
+                int hashEndIndex = imageUrl.endsWith(".webp") ? imageUrl.length() - 5 : imageUrl.length() - 4;
+                task.setMessageHash(imageUrl.substring(hashStartIndex + 1, hashEndIndex));
+            } else {
+                task.setTaskStatus(String.valueOf(TaskStatus.FAILURE));
+            }
+
+            // 更新数据库
+            taskLogService.saveOrUpdate(task);
+        });
+
+        // 执行下一个任务
+        Constant.ATOMIC_INT.decrementAndGet();
+        Map<String, String> poll = Constant.taskQueue.poll();
+        if (poll != null && !poll.isEmpty()) {
+            String paramsStr = poll.values().stream().findFirst().get();
+            discordService.pushTask(paramsStr);
         }
-
-        // 更新数据库
-        taskLogService.saveOrUpdate(task);
     }
 }

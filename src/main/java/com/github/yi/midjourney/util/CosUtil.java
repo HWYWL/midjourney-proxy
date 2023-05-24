@@ -15,6 +15,7 @@ import com.qcloud.cos.model.StorageClass;
 import com.qcloud.cos.model.UploadResult;
 import com.qcloud.cos.transfer.TransferManager;
 import com.qcloud.cos.transfer.Upload;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
+@Slf4j
 @Component
 public class CosUtil {
     @Autowired
@@ -39,18 +41,22 @@ public class CosUtil {
      * @return 腾讯cos图片地址
      */
     public String cosUpload(String imageUrl) {
-        // 对象键(Key)是对象在存储桶中的唯一标识。
-        String[] split = imageUrl.split(StrUtil.UNDERLINE);
+        try {
+            // 对象键(Key)是对象在存储桶中的唯一标识。
+            String[] split = imageUrl.split(StrUtil.UNDERLINE);
 
-        File tempFile = FileUtil.createTempFile();
-        File file = HttpUtil.downloadFileFromUrl(imageUrl, tempFile, 10000);
+            File tempFile = FileUtil.createTempFile();
+            File file = HttpUtil.downloadFileFromUrl(imageUrl, tempFile, 10000);
 
-        String today = DateUtil.convertTimeZone(DateUtil.date(), TimeZone.getTimeZone("Asia/Shanghai")).toString(DatePattern.NORM_DATE_PATTERN);
-        String key = "midjourney/" + today + StrUtil.SLASH + split[split.length - 1];
-        String url = uploadFile(file, key);
+            String today = DateUtil.convertTimeZone(DateUtil.date(), TimeZone.getTimeZone("Asia/Shanghai")).toString(DatePattern.NORM_DATE_PATTERN);
+            String key = "midjourney/" + today + StrUtil.SLASH + split[split.length - 1];
+            imageUrl = uploadFile(file, key);
+        } catch (Exception e) {
+            log.error("文件转换异常，将使用原有url，错误：{}", e.getMessage());
+        }
 
         // 拼接url返回
-        return url;
+        return imageUrl;
     }
 
     /**

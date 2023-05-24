@@ -61,7 +61,6 @@ public class TriggerController {
                 .action(String.valueOf(submitDTO.getAction()));
 
         Task task;
-        Message<Void> result;
         if (Action.IMAGINE.equals(submitDTO.getAction())) {
             String prompt = submitDTO.getPrompt();
             if (CharSequenceUtil.isBlank(prompt)) {
@@ -86,7 +85,7 @@ public class TriggerController {
 
             // 更新数据库
             taskLogService.saveOrUpdateTask(task);
-            result = this.discordService.imagine(task.getFinalPrompt());
+            this.discordService.imagine(taskId, task.getFinalPrompt());
         } else {
             if (CharSequenceUtil.isBlank(submitDTO.getTaskId())) {
                 return Message.validationError();
@@ -105,10 +104,10 @@ public class TriggerController {
 
             if (Action.UPSCALE.equals(submitDTO.getAction())) {
                 taskBuilder.description("/up " + submitDTO.getTaskId() + " U" + submitDTO.getIndex());
-                result = this.discordService.upscale(targetTask.getMessageId(), submitDTO.getIndex(), targetTask.getMessageHash());
+                this.discordService.upscale(taskId, targetTask.getMessageId(), submitDTO.getIndex(), targetTask.getMessageHash());
             } else if (Action.VARIATION.equals(submitDTO.getAction())) {
                 taskBuilder.description("/up " + submitDTO.getTaskId() + " V" + submitDTO.getIndex());
-                result = this.discordService.variation(targetTask.getMessageId(), submitDTO.getIndex(), targetTask.getMessageHash());
+                this.discordService.variation(taskId, targetTask.getMessageId(), submitDTO.getIndex(), targetTask.getMessageHash());
             } else {
                 // todo 暂不支持 reset, 接收mj消息时, 无法找到对应task
                 return Message.of(Message.VALIDATION_ERROR_CODE, "暂不支持 reset 操作");
@@ -116,10 +115,6 @@ public class TriggerController {
 
             task = taskBuilder.build();
             taskLogService.saveOrUpdateTask(task);
-        }
-
-        if (result.getCode() != ResultEnum.SUCCESS.getCode()) {
-            return Message.of(result.getCode(), result.getDescription());
         }
 
         return Message.success(task);

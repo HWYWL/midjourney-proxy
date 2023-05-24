@@ -49,6 +49,7 @@ public class TaskLogServiceImpl extends ServiceImpl<TaskLogMapper, Task> impleme
 
         LambdaQueryWrapper<Task> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Task::getUserId, userId);
+        wrapper.eq(Task::getTaskStatus, "SUCCESS");
         wrapper.gt(Task::getSubmitTime, offset.toTimestamp());
         wrapper.orderByDesc(Task::getSubmitTime);
 
