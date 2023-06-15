@@ -2,7 +2,7 @@
 
 代理 MidJourney 的discord频道，实现api形式调用AI绘图
 
-此项目Fork自 [midjourney-proxy](https://github.com/novicezk/midjourney-proxy "midjourney-proxy") 项目，对其进行了增强。
+此项目Fork自 [midjourney-proxy](https://github.com/novicezk/midjourney-proxy "midjourney-proxy") 项目，对其进行了增强，可见文档最后的更新日志。
 
 ## 使用前提
 1. 科学上网
