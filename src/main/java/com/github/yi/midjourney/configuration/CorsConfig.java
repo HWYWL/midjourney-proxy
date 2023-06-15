@@ -8,6 +8,7 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
+ * 解决前后端分离时产生的跨域问题
  * @author YI
  */
 @Configuration

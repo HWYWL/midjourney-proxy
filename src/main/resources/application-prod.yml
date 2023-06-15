@@ -5,31 +5,36 @@ logging:
   file:
     path: /home/midjourney-proxy/logs
 
+# midjourney机器人配置
 mj:
   discord:
-    guild-id: 1105311904089518164
-    channel-id: 1105311905368784940
-    user-token: MTA5OTY5NTQwMjUzNTYzNzA2Mw.GPAQd4.rBPgi2iUgoJfZBS5GTrE-kl0UjvaLjCVAb6b7M
-    bot-token: MTEwNTMxMjU2OTE4NDQ5NzY3NA.GMiGWP.aXtWcO3KYsGd_rqMILZUwutULcf9epiyMlp6hI
+    guild-id: 11111111111111111111
+    channel-id: 111111111111111111111
+    user-token: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    bot-token: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   translate-way: null
 
 spring:
   # 多数据源配置
   datasource:
     dynamic:
-      primary: mysql #设置默认的数据源或者数据源组,默认值即为postgresql
+      primary: mysql #设置默认的数据源或者数据源组
       strict: false #设置严格模式,默认false不启动. 启动后在未匹配到指定数据源时候会抛出异常,不启动则使用默认数据源.
       p6spy: true # SQL记录器，默认false,不想打印SQL可以关闭
       datasource:
         mysql:
-          url: jdbc:mysql://127.0.0.1:3306/mj?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+          url: jdbc:mysql://127.0.0.1:3306/mj?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
           username: root
           password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver
+          init:
+            schema: static/mj.sql # 配置则生效,自动初始化表结构
+            continue-on-error: false # 默认true,初始化失败是否继续
+            separator: ";" # sql默认分号分隔符，一般无需更改
 
-# 生成的图像文件存储
+# 腾讯云生成的图像文件存储
 cos:
-  secretId: AKIDObZBZhY8SWLtAAtMXR4QVJq66pIUP4SY
-  secretKey: rSnqc7LIyNVBbkcEYbNs76oFPHsDH4aq
-  bucketName: lg-6pthrhxo-1253466000
-  cosRegion: ap-shanghai
+  secretId: xxxxxxxxx
+  secretKey: xxxxxxx
+  bucketName: xxxxxxxxxx
+  cosRegion: xxxxxx

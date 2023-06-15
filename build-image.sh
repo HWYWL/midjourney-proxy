@@ -25,4 +25,5 @@ ls -l "${CURRENT_DIR}"/target/*.jar
 (cd "${CURRENT_DIR}"; docker build . -t midjourney-proxy:${VERSION})
 
 docker tag midjourney-proxy:${VERSION} novicezk/midjourney-proxy-${ARCH}:${VERSION}
-docker push novicezk/midjourney-proxy-${ARCH}:${VERSION}
+# 不推送镜像到公共仓库
+#docker push novicezk/midjourney-proxy-${ARCH}:${VERSION}
